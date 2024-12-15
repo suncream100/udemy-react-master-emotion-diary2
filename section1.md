@@ -67,7 +67,8 @@ JavaScript 엔진은 브라우저에 기본 탑재되어 있음
 - null은 명시적으로 할당해주는 것이기 때문에 자동으로 할당되는 값인 undefined와는 다름
 
 ### 객체 타입
-(작성중)
+- 원시 타입이 아닌 객체 타입의 자료형
+- 여러가지 값을 동시에 저장할 수 있는 자료형
 
 <br>
 
@@ -164,7 +165,231 @@ for (let 초기값; 조건식; 증감식) {
     break;
   }
   if (조건문) {
-    continue;
+    continue;
   }
 }
+```
+
+<br>
+
+## 함수
+일련의 작업을 수행하거나 값을 반환하는 재사용 가능한 코드 블록
+
+### 함수 선언문
+- 일반적인 방식으로 함수를 정의
+- 호이스팅의 영향을 받음
+```
+function 함수명(인수1, 인수2) {
+  // 코드
+  return 
+}
+함수명(인수1, 인수2);
+```
+| 구분 | 매개변수 (Parameter) | 인수 (Argument) |
+| --- | ------------------ | ------------------ |
+| 정의 | 함수 선언 시 정의된 변수 | 함수 호출 시 전달되는 값 |
+| 위치 | 함수 선언부 | 함수 호출부 |
+| 예시 | function greet(name) | greet('Alice') |
+
+#### 호이스팅
+- 호이스팅은 자바스크립트의 실행 컨텍스트에서 변수, 함수 선언을 코드 실행 전에 메모리로 끌어올리는 동작을 의미
+- 함수 선언문은 코드 실행 전에 메모리에 올라가므로, 선언 전에 함수 호출이 가능
+
+### 함수 표현식
+- 함수를 변수에 할당하여 정의
+- 호이스팅의 영향을 받지 않음
+```
+const 변수명 = function () {
+  // 코드
+};
+변수명();
+```
+
+### 화살표 함수
+- 짧은 문법으로 함수를 정의
+- `this`가 정적으로 바인딩됩니다(상위 스코프를 가리킴)
+- 한 줄 작성 : **암묵적 반환**. `return`을 명시할 필요 없이 결과값이 자동으로 반환
+- 여러줄 작성 : 중괄호를 사용해야하며 자동 반환이 되지 않기 때문에 `return`을 사용해야 값이 반환됨
+```
+// 한 줄 작성
+const 변수명 = () => // 코드
+변수명(); // "Hello!"
+
+// 여러 줄 작성
+const 변수명 = () => {
+  // 코드
+  return 코드;
+}
+변수명();
+```
+
+### 콜백함수
+- 다른 함수에 인수로 전달되어 나중에 실행되는 함수
+- 호출 시점을 다른 함수가 결정
+- 다른 함수에 작업이 끝난 후 실행할 코드를 전달할 때 사용
+- 보통 비동기 작업(예: 데이터 가져오기, 타이머, 이벤트 처리)에서 많이 사용됨
+```
+function greet(name, callback) {
+  console.log(`Hello, ${name}!`);
+  callback(); // 콜백 함수 실행
+}
+
+function sayGoodbye() {
+  console.log("Goodbye!");
+}
+
+greet("Alice", sayGoodbye);
+// Hello, Alice!
+// Goodbye!
+```
+```
+// 비동기 콜백 함수
+console.log("시작");
+
+setTimeout(() => {
+  console.log("3초 후 실행");
+}, 3000);
+
+console.log("끝");
+// 시작
+// 끝
+// 3초 후 실행
+```
+```
+// 배열 메서드에서 콜백 함수 활용
+// 예제: 배열의 각 요소를 출력
+const numbers = [1, 2, 3, 4, 5];
+
+numbers.forEach((num) => {
+  console.log(num); // 배열의 각 요소를 출력
+});
+
+// 예제: 배열 요소를 제곱한 새 배열 만들기
+const squares = numbers.map((num) => num * num);
+console.log(squares); // [1, 4, 9, 16, 25]
+```
+
+<br>
+
+## 스코프
+범위. 변수나 함수에 접근하거나 호출할 수 있는 범위를 말함
+
+### 전역 스코프
+- 코드 전체에서 접근 가능
+- 전역 스코프에 변수를 선언하면 전역 객체(브라우저 환경에서는 window)의 속성이 됨
+```
+const globalVar = "I am global"; // 전역 변수
+
+function printGlobal() {
+  console.log(globalVar); // 접근 가능
+}
+
+printGlobal(); // "I am global"
+```
+
+### 지역 스코프
+- 특정 코드 블록(함수, 조건문, 반복문 등) 내에서만 접근 가능
+- 지역 스코프에서 선언된 변수는 해당 블록을 벗어나면 접근할 수 없음
+- `{}` 밖에서는 접근할 수 없음
+- 내부 스코프에서 변수를 찾지 못하면 외부 스코프를 순차적으로 탐색함
+```
+// 내부 스코프에 변수가 없을 때
+const outerVar = "I am outer";
+
+function innerFunction() {
+  console.log(outerVar); // 외부 스코프의 변수 접근 가능
+}
+
+innerFunction(); // "I am outer"
+```
+
+<br>
+
+## 객체
+객체는 키와 값의 쌍으로 이루어진 데이터 구조로, 관련된 데이터를 하나로 묶어서 관리할 때 사용
+
+### 객체 생성
+#### 객체 리터럴 방식
+가장 간단하고 일반적인 방법
+```
+const person = {
+  name: "Alice", // 키: 값
+  age: 25,
+  greet: function() {
+    console.log("Hello, I'm " + this.name);
+  }
+};
+
+console.log(person.name); // "Alice"
+person.greet(); // "Hello, I'm Alice"
+```
+#### 생성자 함수
+```
+const person = new Object(); // Object 키워드
+person.name = "Alice";
+person.age = 25;
+
+console.log(person.name); // "Alice"
+```
+
+### 객체 조작
+#### 1. 프로퍼티 접근
+- 점 표기법 : `object.key`
+- 대괄호 표기법 : `object["key"]` (동적으로 키를 설정할 때 유용)
+```
+console.log(person.name);       // 점 표기법
+console.log(person["name"]);    // 대괄호 표기법
+```
+#### 2. 프로퍼티 추가/수정
+```
+// 점 표기법, 대괄호 표기법 모두 사용 가능
+person.gender = "female"; // 새로운 키 추가
+person.age = 26;          // 기존 값 수정
+```
+#### 3. 프로퍼티 삭제
+```
+delete person.age;
+```
+#### 4. 프로퍼티 존재 유무 확인
+```
+let result = "name" in person;
+console.log(result1); // true or false
+```
+
+### 상수 객체
+const로 선언 객체 자체의 참조(주소)를 고정하지만 객체 내부의 값(프로퍼티)는 변경 가능
+
+### 메서드
+객체에 정의된 함수
+```
+// 함수 호출
+person.sayHi();
+person["sayHi"]();
+```
+
+<br>
+
+## 배열
+여러개의 값을 순차적으로 담을 수 있는 자료형
+
+### 배열 생성
+#### 배열 리터럴 방식
+가장 간단하고 일반적인 방법
+```
+const fruits = ["Apple", "Banana", "Cherry"];
+```
+#### 생성자 배열
+```
+const numbers = new Array(1, 2, 3, 4, 5); // Array 키워드
+```
+
+### 배열 조작
+#### 1. 요소 접근
+인덱스로 접근 가능
+```
+arr[0];
+```
+#### 2. 프로퍼티 추가/수정
+```
+arr[0] = "hello";
 ```
