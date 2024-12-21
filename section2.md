@@ -359,3 +359,113 @@ const finded = arr5.find(
 
 console.log(finded); // { name: "아무개" }
 ```
+
+### 배열 변형
+#### filter
+기존 배열에서 조건을 만족하는 요소들만 필터링하여 새로운 배열로 반환
+```
+let arr1 = [
+  { name: "아무개", hobby: "테니스" },
+  { name: "개똥이", hobby: "테니스" },
+  { name: "홍길동", hobby: "독서" },
+];
+
+const tennisPeople = arr1.filter(
+  (item) => item.hobby === "테니스" // [{ name: "아무개", hobby: "테니스" }, { name: "개똥이", hobby: "테니스" }]
+);
+```
+
+#### map
+배열의 모든 요소를 순회하면서, 각각 콜백함수를 실행하고 그 결과값들을 모아서 새로운 배열로 반환
+```
+let arr2 = [1, 2, 3];
+const mapResult1 = arr2.map((item, idx, arr) => {
+  return item * 2;
+});
+
+let names = arr1.map((item) => item.name); // ['아무개', '개똥이', '홍길동']
+```
+
+#### sort
+배열을 사전순으로 정렬  
+숫자의 대소관계 기준 정렬이 아니기 때문에 콜백함수에 조건을 넣어주어야 함
+```
+let arr3 = [10, 3, 5];
+arr3.sort((a, b) => {
+  if (a > b) {
+    // a가 b 앞에 와라
+    return -1;
+  } else if (a < b) {
+    // b가 a 앞에 와라
+    return 1;
+  } else {
+    // 두 값의 자리를 바꾸지 마라
+    return 0;
+  }
+});
+console.log(arr3); // [10, 5, 3]. 내림차순
+```
+
+#### toSorted
+정렬된 새로운 배열을 반환  
+`sort`와 같은 기능을 하는 메서드지만 `sort` 메서드는 원본배열 자체를 변경시키고, `toSorted` 메서드는 원본 배열은 놔두고 새로운 배열을 반환함
+```
+let arr5 = ["c", "a", "b"];
+const sorted = arr5.toSorted();
+console.log(arr5); // ['c', 'a', 'b']
+console.log(sorted); // ['a', 'b', 'o']
+```
+
+#### join
+배열의 모든 요소를 하나의 문자열로 합쳐서 반환
+```
+let arr6 = ["I", "love", "it"];
+const joined = arr6.join(" ");
+console.log(joined); // I love it
+```
+
+<br>
+
+## Date 객체와 날짜
+### Date 객체를 생성
+Date라는 내장함수를 호출하여 생성할 수 있음
+```
+let date1 = new Date(); // 생성자. 인수가 없으면 현재시간 기준으로 출력
+let date2 = new Date("2024/12/24/23:59:59");
+let date3 = new Date(2024, 12, 24, 23, 59, 59);
+```
+
+### 타임 스탬프
+특정 시간이 "1970.01.01 00시 00분 00초"로 부터 몇 ms가 지났는지를 의미하는 숫자값
+```
+let ts1 = date1.getTime();
+let date4 = new Date(ts1);
+console.log(date4);
+```
+
+### 시간 요소 추출
+```
+let year = date1.getFullYear();
+let month = date1.getMonth() + 1; // 자바스크립트의 1월은 0으로 표기되기 때문
+let date = date1.getDate();
+
+let hour = date1.getHours();
+let minute = date1.getMinutes();
+let seconds = date1.getSeconds();
+```
+
+### 시간 수정
+```
+date1.setFullYear(2025);
+date1.setMonth(11); // 실제론 12월
+date1.setDate(24);
+date1.setHours(23);
+date1.setMinutes(59);
+date1.setSeconds(59);
+```
+
+### 시간을 여러 포맷으로 출력하기
+```
+console.log(date1.toDateString());
+console.log(date1.toLocaleString());
+```
