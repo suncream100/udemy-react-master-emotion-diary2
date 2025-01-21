@@ -4,6 +4,7 @@ import Editor from "./components/Editor";
 import Header from "./components/Header";
 import List from "./components/List";
 import { useRef } from "react";
+import ExamReducer from "./components/ExamReducer";
 
 const mokDate = [
   {
@@ -57,6 +58,8 @@ function App() {
       <Header />
       <Editor onCreate={onCreate} />
       <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
+      <hr />
+      <ExamReducer />
     </div>
   );
 }
